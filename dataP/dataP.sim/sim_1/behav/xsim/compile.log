@@ -1,0 +1,7 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Katie/Documents/DDGP/Assignment2DDGP/Assignment 2/peak_detector/common_pack.vhd" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Katie/Documents/DDGP/Assignment2DDGP/dataP/dataP.srcs/sources_1/new/dataConsume.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'dataConsume'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Katie/Documents/DDGP/Assignment2DDGP/Assignment 2/peak_detector/dataGen.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'dataGen'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/Katie/Documents/DDGP/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'tb_dataGenConsume'
