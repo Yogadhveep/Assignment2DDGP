@@ -1,0 +1,1 @@
+--incr --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "secureip" --snapshot "tb_dataGenConsume_behav" "xil_defaultlib.tb_dataGenConsume" -log "elaborate.log" 

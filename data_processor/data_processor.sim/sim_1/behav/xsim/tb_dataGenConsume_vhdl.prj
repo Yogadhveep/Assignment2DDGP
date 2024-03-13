@@ -1,0 +1,9 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../../Assignment 2/peak_detector/common_pack.vhd" \
+"../../../../data_processor.srcs/sources_1/new/dataConsume.vhd" \
+"../../../../../Assignment 2/peak_detector/dataGen.vhd" \
+"../../../../../Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd" \
+
+# Do not sort compile order
+nosort
