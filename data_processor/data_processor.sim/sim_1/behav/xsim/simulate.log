@@ -31,7 +31,7 @@ but is           11011101
 Time: 30090 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
 Warning: Mismatch for seq 0:
 peak 0 should be {0100} {1000} {0000}
-but is           {0011} {0000} {0000}
+but is           {0000} {0000} {0011}
 Time: 30090 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
 Note: Sequence No.1; Cycle count:1818
 Time: 36370 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
@@ -65,7 +65,7 @@ but is           10101000
 Time: 36370 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
 Warning: Mismatch for seq 1:
 peak 1 should be {0000} {0101} {0000}
-but is           {0010} {0000} {0000}
+but is           {0000} {0000} {0010}
 Time: 36370 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
 Note: Sequence No.2; Cycle count:2122
 Time: 42450 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
@@ -99,7 +99,7 @@ but is           10101000
 Time: 42450 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
 Warning: Mismatch for seq 2:
 peak 2 should be {0000} {1001} {0000}
-but is           {0010} {0000} {0000}
+but is           {0000} {0000} {0010}
 Time: 42450 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
 Note: Sequence No.3; Cycle count:2426
 Time: 48530 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
@@ -118,20 +118,4 @@ Time: 48530 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/V
 Warning: Mismatch for seq 3:
 byte 3 should be 01111110
 but is           11101110
-Time: 48530 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
-Warning: Mismatch for seq 3:
-byte 4 should be 10011110
-but is           01101111
-Time: 48530 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
-Warning: Mismatch for seq 3:
-byte 5 should be 01010010
-but is           01000101
-Time: 48530 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
-Warning: Mismatch for seq 3:
-byte 6 should be 01001110
-but is           10011000
-Time: 48530 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
-Warning: Mismatch for seq 3:
-peak 3 should be {0000} {0101} {0101}
-but is           {0011} {0000} {0000}
-Time: 48530 ns  Iteration: 2  Process: /tb_dataGenConsume/seqCounter  File: E:/Vivado/Projects/Assignment2/Assignment2DDGP/Assignment 2/peak_detector/signed/tb_dataConsume_signed.vhd
+Tim

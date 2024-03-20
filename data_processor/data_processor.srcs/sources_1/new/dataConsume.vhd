@@ -158,11 +158,11 @@ begin
     variable temp : integer;
     BEGIN
         temp := intMaxIndex;
-        maxIndex(2) <= std_logic_vector(to_unsigned(temp mod 10, 4));
+        maxIndex(0) <= std_logic_vector(to_unsigned(temp mod 10, 4));
         temp := temp /10;
         maxIndex(1) <= std_logic_vector(to_unsigned(temp mod 10, 4));
         temp := temp /10;
-        maxIndex(0) <= std_logic_vector(to_unsigned(temp mod 10, 4));
+        maxIndex(2) <= std_logic_vector(to_unsigned(temp mod 10, 4));
     END PROCESS;
 
 
