@@ -58,6 +58,8 @@ architecture Behavioral of dataConsume is
     SIGNAL maxCount : integer;   
     SIGNAL c : integer;
     SIGNAL intMaxIndex : integer;
+    
+    SIGNAL results : CHAR_ARRAY_TYPE(0 to RESULT_BYTE_NUM-1);
 begin
     
     stateLogic : process (reset, clk)
@@ -75,7 +77,6 @@ begin
     
     output : process (curState)
     variable ctrl1 : std_logic := '0';    
-    variable results : CHAR_ARRAY_TYPE(0 to RESULT_BYTE_NUM-1);
     BEGIN
         IF (curState = INIT) THEN
             ctrl1 := NOT ctrl1;
@@ -87,7 +88,7 @@ begin
         ELSIF (curState = STORE) THEN
             byte <= data;
             dataReady <= '1';
-            results := results(1 to RESULT_BYTE_NUM-1) & data;
+            results <= results(1 to RESULT_BYTE_NUM-1) & data;
             dataResults <= results;
             c <= c +1;    
         ELSIF (curState = INDEX) THEN
