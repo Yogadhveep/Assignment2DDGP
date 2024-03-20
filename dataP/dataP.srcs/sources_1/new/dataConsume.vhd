@@ -35,8 +35,9 @@ end dataConsume;
 architecture Behavioral of dataConsume is
     Type State_type is (INIT, STORE, INDEX, REQ, GET, DONE);
     Signal currState, nextState : State_type;
-    --Signal maxCount : variable;
     signal maxCount : integer;
+    signal c: integer;
+    SIGNAL results : CHAR_ARRAY_TYPE(0 to RESULT_BYTE_NUM-1);
 begin
     stateLogic : process (reset, clk)
     BEGIN
@@ -48,14 +49,52 @@ begin
         END IF;
     END PROCESS;
     
-    nextStateLogic : process (ctrlIn)
-    --variable maxcount: integer;
+    nextStateLogic : process (ctrlIn, currState)
     BEGIN
         --
-        
-        --maxCount := (to_integer(unsigned(numWords_bcd(2))) * 100);
-        --maxCount <= to_integer(unsigned(numWords_bcd(2))) * 100;
-        maxCount <= (to_integer(unsigned(numWords_bcd(2))) * 100) + (to_integer(unsigned(numWords_bcd(1))) * 10) + to_integer(unsigned(numWords_bcd(0)));
+        --maxCount <= (to_integer(unsigned(numWords_bcd(2))) * 100) + (to_integer(unsigned(numWords_bcd(1))) * 10) + to_integer(unsigned(numWords_bcd(0)));
+        CASE currState IS 
+            WHEN INIT =>
+                IF ctrlIn'EVENT THEN
+                    nextState <= STORE;
+                ELSE 
+                    nextState <= INIT;
+                END IF;
+            
+            WHEN STORE =>
+                maxCount <= (to_integer(unsigned(numWords_bcd(2))) * 100) + (to_integer(unsigned(numWords_bcd(1))) * 10) + to_integer(unsigned(numWords_bcd(0)));
+                IF maxCount > c THEN
+                    nextState <= INDEX;
+                ELSE
+                    nextState <= DONE;
+                END IF;
+                
+            WHEN INDEX =>
+                IF ((c < 5) OR (NOT((results(2)<results(3)) AND (results(4)<results(3))))) AND ctrlIn'EVENT THEN
+                    nextState <= STORE;
+                ELSIF NOT((c < 5) OR (NOT((results(2)<results(3)) AND (results(4)<results(3))))) AND ctrlIn'EVENT THEN
+                    nextState <= GET;
+                ELSE 
+                    nextState <= INDEX;
+                END IF;
+            
+            WHEN GET =>
+                maxCount <= (to_integer(unsigned(numWords_bcd(2))) * 100) + (to_integer(unsigned(numWords_bcd(1))) * 10) + to_integer(unsigned(numWords_bcd(0)));
+                IF maxCount > c THEN
+                    nextState <= REQ;
+                ELSE
+                    nextState <= DONE;
+                END IF;
+            
+            WHEN REQ =>
+                IF ctrlIn'EVENT THEN
+                    nextState <= GET;
+                ELSE 
+                    nextState <= REQ;
+                END IF;
+            WHEN DONE =>
+                nextState <= INIT;
+        END CASE;
     END PROCESS;
     
     Output : process (currState)
