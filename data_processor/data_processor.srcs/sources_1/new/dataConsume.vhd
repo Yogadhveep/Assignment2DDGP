@@ -18,10 +18,10 @@
 -- 
 ----------------------------------------------------------------------------------
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.std_logic_arith.all;
-use ieee.numeric_std.all;
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+--use ieee.numeric_std.all;
+use IEEE.NUMERIC_STD.ALL;
 use work.common_pack.all;
 
 
@@ -54,8 +54,7 @@ end dataConsume;
 architecture Behavioral of dataConsume is
     TYPE STATE_TYPE is (INIT, STORE, INDEX, REQ, GET, DONE);
     SIGNAL curState, nextState : STATE_TYPE;      
-  
-    SIGNAL maxCount : integer;   
+     
     SIGNAL c : integer;
     SIGNAL intMaxIndex : integer;
     
@@ -68,11 +67,57 @@ begin
             curState <= INIT;
         ELSIF start = '1' AND rising_edge(clk) THEN
             curState <= nextState;
+            dataResults <= results;
         END IF;
     END PROCESS;
     
-    nextStateLogic : process(ctrlIn, curState)
+    nextStateLogic : process (ctrlIn, curState)
+    variable maxCount : integer;
     BEGIN
+        --
+        --maxCount <= (to_integer(unsigned(numWords_bcd(2))) * 100) + (to_integer(unsigned(numWords_bcd(1))) * 10) + to_integer(unsigned(numWords_bcd(0)));
+        CASE curState IS 
+            WHEN INIT =>
+                IF ctrlIn'EVENT THEN
+                    nextState <= STORE;
+                ELSE 
+                    nextState <= INIT;
+                END IF;
+            
+            WHEN STORE =>
+                maxCount := (to_integer(unsigned(numWords_bcd(2))) * 100) + (to_integer(unsigned(numWords_bcd(1))) * 10) + to_integer(unsigned(numWords_bcd(0)));
+                IF maxCount > c THEN
+                    nextState <= INDEX;
+                ELSE
+                    nextState <= DONE;
+                END IF;
+                
+            WHEN INDEX =>
+                IF ((c < 5) OR (NOT((results(2)<results(3)) AND (results(4)<results(3))))) AND ctrlIn'EVENT THEN
+                    nextState <= STORE;
+                ELSIF NOT((c < 5) OR (NOT((results(2)<results(3)) AND (results(4)<results(3))))) AND ctrlIn'EVENT THEN
+                    nextState <= GET;
+                ELSE 
+                    nextState <= INDEX;
+                END IF;
+            
+            WHEN GET =>
+                maxCount := (to_integer(unsigned(numWords_bcd(2))) * 100) + (to_integer(unsigned(numWords_bcd(1))) * 10) + to_integer(unsigned(numWords_bcd(0)));
+                IF maxCount > c THEN
+                    nextState <= REQ;
+                ELSE
+                    nextState <= DONE;
+                END IF;
+            
+            WHEN REQ =>
+                IF ctrlIn'EVENT THEN
+                    nextState <= GET;
+                ELSE 
+                    nextState <= REQ;
+                END IF;
+            WHEN DONE =>
+                nextState <= INIT;
+        END CASE;
     END PROCESS;
     
     output : process (curState)
@@ -89,7 +134,6 @@ begin
             byte <= data;
             dataReady <= '1';
             results <= results(1 to RESULT_BYTE_NUM-1) & data;
-            dataResults <= results;
             c <= c +1;    
         ELSIF (curState = INDEX) THEN
             dataReady <= '0';
