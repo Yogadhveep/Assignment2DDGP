@@ -1,26 +1,9 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 13.03.2024 11:41:26
--- Design Name: 
--- Module Name: dataConsume - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+--use ieee.numeric_std.all;
+use IEEE.NUMERIC_STD.ALL;
 use work.common_pack.all;
 
 -- Uncomment the following library declaration if using
@@ -52,6 +35,8 @@ end dataConsume;
 architecture Behavioral of dataConsume is
     Type State_type is (INIT, STORE, INDEX, REQ, GET, DONE);
     Signal currState, nextState : State_type;
+    --Signal maxCount : variable;
+    signal maxCount : integer;
 begin
     stateLogic : process (reset, clk)
     BEGIN
@@ -64,8 +49,13 @@ begin
     END PROCESS;
     
     nextStateLogic : process (ctrlIn)
+    --variable maxcount: integer;
     BEGIN
         --
+        
+        --maxCount := (to_integer(unsigned(numWords_bcd(2))) * 100);
+        --maxCount <= to_integer(unsigned(numWords_bcd(2))) * 100;
+        maxCount <= (to_integer(unsigned(numWords_bcd(2))) * 100) + (to_integer(unsigned(numWords_bcd(1))) * 10) + to_integer(unsigned(numWords_bcd(0)));
     END PROCESS;
     
     Output : process (currState)
