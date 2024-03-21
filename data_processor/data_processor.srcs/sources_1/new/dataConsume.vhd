@@ -52,13 +52,16 @@ entity dataConsume is
 end dataConsume;
 
 architecture Behavioral of dataConsume is
-    TYPE STATE_TYPE is (INIT, STORE, INDEX, REQ, GET, DONE);
+    TYPE STATE_TYPE is (INIT, STORE, INDEX, SAVE, DONE);
     SIGNAL curState, nextState : STATE_TYPE;      
      
     SIGNAL c : integer;
+    SIGNAL intMaxIndex2 : integer;
     SIGNAL intMaxIndex : integer;
     
-    SIGNAL results : CHAR_ARRAY_TYPE(0 to RESULT_BYTE_NUM-1);
+    SIGNAL dataResults2 : CHAR_ARRAY_TYPE(0 to RESULT_BYTE_NUM-1);
+    SIGNAL peakResult : signed(7 downto 0) := (others => '0');
+    SIGNAL test : integer;
 begin
     
     stateLogic : process (reset, clk)
@@ -67,7 +70,6 @@ begin
             curState <= INIT;
         ELSIF start = '1' AND rising_edge(clk) THEN
             curState <= nextState;
-            dataResults <= results;
         END IF;
     END PROCESS;
     
@@ -91,30 +93,25 @@ begin
                 ELSE
                     nextState <= DONE;
                 END IF;
+                test <= 0;
                 
             WHEN INDEX =>
-                IF ((c < 5) OR (NOT((results(2)<results(3)) AND (results(4)<results(3))))) AND ctrlIn'EVENT THEN
-                    nextState <= STORE;
-                ELSIF NOT((c < 5) OR (NOT((results(2)<results(3)) AND (results(4)<results(3))))) AND ctrlIn'EVENT THEN
-                    nextState <= GET;
+                IF ctrlIn'EVENT THEN
+                    IF NOT(signed(dataResults2(3)) > peakResult) THEN
+                        nextState <= STORE;
+                        test <= 1;
+                    ELSIF ((c < 5) OR NOT ((signed(dataResults2(2)) < signed(dataResults2(3))) AND (signed(dataResults2(3)) > signed(dataResults2(4))))) THEN
+                       nextState <= STORE;
+                       test <= 2;
+                    ELSE
+                        nextState <= SAVE;
+                   END IF;
                 ELSE 
                     nextState <= INDEX;
                 END IF;
             
-            WHEN GET =>
-                maxCount := (to_integer(unsigned(numWords_bcd(2))) * 100) + (to_integer(unsigned(numWords_bcd(1))) * 10) + to_integer(unsigned(numWords_bcd(0)));
-                IF maxCount > c THEN
-                    nextState <= REQ;
-                ELSE
-                    nextState <= DONE;
-                END IF;
-            
-            WHEN REQ =>
-                IF ctrlIn'EVENT THEN
-                    nextState <= GET;
-                ELSE 
-                    nextState <= REQ;
-                END IF;
+            WHEN SAVE =>
+                nextState <= STORE;
             WHEN DONE =>
                 nextState <= INIT;
         END CASE;
@@ -129,27 +126,24 @@ begin
             dataReady <= '0';
             seqDone <= '0';
             c <= 0;
-            intMaxIndex <= 0;
+            intMaxIndex2 <= 0;
         ELSIF (curState = STORE) THEN
             byte <= data;
             dataReady <= '1';
-            results <= results(1 to RESULT_BYTE_NUM-1) & data;
+            dataResults2 <= dataResults2(1 to RESULT_BYTE_NUM-1) & data;
             c <= c +1;    
         ELSIF (curState = INDEX) THEN
             dataReady <= '0';
             ctrl1 := NOT ctrl1;
             ctrlOut <= ctrl1;
-            intMaxIndex <= c -4;
-        ELSIF (curState = GET) THEN
-            byte <= data;
-            dataReady <= '1';
-            c <= c +1;
-        ELSIF (curState = REQ) THEN
-            dataReady <= '0';
-            ctrl1 := NOT ctrl1;
-            ctrlOut <= ctrl1;
+            intMaxIndex2 <= c -4;
+        ELSIF (curState = SAVE) THEN
+            dataResults <= dataResults2;
+            peakResult <= signed(dataResults2(3));
+            intMaxIndex <= intMaxIndex2;
         ELSIF (curState = DONE) THEN
             seqDone <= '1';
+            peakResult <= (others => '0');
         --
         END IF;
     END PROCESS;
