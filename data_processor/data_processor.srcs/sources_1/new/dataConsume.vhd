@@ -88,7 +88,7 @@ begin
             
             WHEN STORE =>
                 maxCount := (to_integer(unsigned(numWords_bcd(2))) * 100) + (to_integer(unsigned(numWords_bcd(1))) * 10) + to_integer(unsigned(numWords_bcd(0)));
-                IF maxCount > c THEN
+                IF (maxCount > c +1) THEN
                     nextState <= INDEX;
                 ELSE
                     nextState <= DONE;
